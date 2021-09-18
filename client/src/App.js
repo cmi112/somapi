@@ -1,11 +1,18 @@
 import React from 'react'
-import PostWords from './components/PostWords'
+import Footer from './components/Footer'
+import Navbar from './components/Navbar'
+
+
 
 export default function App() {
-    return (
+    return (<>
         <div className="app">
-            <h1>Somali word collector</h1>
-            <PostWords/>
+
+        
+            <Navbar/>
+            
+            <Footer/>
         </div>
+        </>
     )
 }

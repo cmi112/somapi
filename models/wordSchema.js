@@ -13,6 +13,10 @@ const WordSchema=mongoose.Schema({
     type:String,
  
   },
+  englishWord:{
+    type:String,
+
+  },
   time : { type : Date, default: Date.now }
   
 })

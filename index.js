@@ -21,6 +21,19 @@ app.get("/words",async (req,res)=>{
       res.json({Message:err})
     }
   })
+  // Get Words
+  app.get("/wordlist",async (req,res)=>{
+    try{
+  const words= await wordSchema.find()
+  res.json(words)
+    }catch(err){
+      res.json({Message:err})
+    }
+  })
+
+
+
+
   // Submits a post
 
   app.post("/words",async(req,res)=>{

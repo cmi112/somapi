@@ -10,21 +10,28 @@ function PostWords() {
     const name=event.target.name.value
     const meaning=event.target.meaning.value
     const explanition=event.target.explanition.value
+    const englishWord=event.target.englishWord.value
     const wordData={
       name,
       meaning,
-      explanition
+      explanition,
+      englishWord
 
     }
     console.log(wordData);
     await axios.post("http://localhost:5000/words",wordData)
-    window.location.replace("/")
+    window.location.replace("/wordlist")
   }
   return (
     <Form onSubmit={submit} className="form">
       <h1>Somali Words collecting</h1>
+      <Form.Group className="mb-3" >
+      <Form.Label>English Word</Form.Label>
+      <Form.Control type="text" placeholder="English meaning" name="englishWord" />
+      
+    </Form.Group>
     <Form.Group className="mb-3" >
-      <Form.Label>Word Name</Form.Label>
+      <Form.Label>Somali word</Form.Label>
       <Form.Control type="text" placeholder="Gali halkan ereyga" name="name" />
       
     </Form.Group>
