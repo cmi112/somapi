@@ -3,15 +3,15 @@ const mongoose=require("mongoose")
 const WordSchema=mongoose.Schema({
   name:{
     type:String,
-    required:true
+
   },
   meaning:{
     type:String,
-    required:true
+    
   },
  explanition:{
     type:String,
-    required:true
+ 
   },
   time : { type : Date, default: Date.now }
   

@@ -2,50 +2,56 @@ require('dotenv').config()
 const express=require ("express");
 const cors = require('cors')
 const mongoose=require("mongoose")
-const WordSchema = require("./models/wordSchema.js")
+const wordSchema = require("./models/wordSchema.js")
 const path = require("path")
 
 
 
-app.use(express.json())
-
-
-app.use(express.static(path.join(__dirname,"build")))
-app.get("/",(req,res)=>{
-  res.sendFile(path.join(__dirname,"build","index.html"))
-})
-
+const app = express();
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Get back all the Posts
 app.get("/words",async (req,res)=>{
     try{
-  const words= await WordSchema.find()
+  const words= await wordSchema.find()
   res.json(words)
     }catch(err){
       res.json({Message:err})
     }
   })
   // Submits a post
-  
-  app.post("/words",async (req,res)=>{
-    // console.log(req.body);
-    const word=new WordSchema({
-      name:req.body.name,
-      meaning:req.body.meaning,
-      explanition:req.body.explanition
-    });
-    try{
-  console.log(word);
-     await word.save()
-     res.send(word)
-    } catch(err){
-      res.json({message:err})
-    }
+
+  app.post("/words",async(req,res)=>{
+    console.log(req.body);
+    const word = new wordSchema(req.body)
+    word.save()
+    
+    res.status(201).json({
+      status:"success",
+      data:{
+        word
+      }
+    })
   
   })
 
-  const app=express()
-  app.use(cors())
+
+
+
+  // DB CONNECTION
+  mongoose.connect(
+    process.env.DB_CONNECTION,
+    async(err)=>{
+        if(err) throw err;
+        console.log("conncted to db")
+    }
+)
+  
+
+  
+
 
 // Add headers
 app.use(function (req, res, next) {
@@ -74,18 +80,8 @@ app.use(function (req, res, next) {
 
 
 
-// Connect to DB
-mongoose.connect(process.env.DB_CONNECTION,{ useNewUrlParser: true ,useUnifiedTopology: true } ,()=>{
-    console.log("Connected to DB");
-  })
-
-// app.get("/players",(req,res)=>{
-//     res.send(importData);
-// })
 
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 
 
@@ -101,8 +97,12 @@ if (process.env.NODE_ENV === "production") {
 app.use((err,req,res,next)=>{
   res.status(err.status || 500).send({success:false,message:err.message})
 })
-const port =process.env.PORT || 5000;
 
-app.listen(port,()=>{
-    console.log(`Server started on Port ${port}`);
-})
+
+const port =process.env.PORT || 5000
+
+app.listen(port, () => {
+  console.log("====================================");
+  console.log("Server start with port: " + port);
+  console.log("====================================");
+});
